@@ -5,6 +5,7 @@ import learnfp.functor.Functor
 abstract class Monad[M[_]](implicit functor:Functor[M]) {
   def pure[A](a:A):M[A]
   def flatMap[A, B](a:M[A])(fx: A => M[B]):M[B]
+  def flatMap[String, Int](a: List[String])(fx: String => List[Int]) : List[Int]
 }
 
 class MonadOps[A, M[_]](a:M[A])(implicit monad:Monad[M]) {
@@ -19,4 +20,5 @@ class MonadOpsPure[A](a:A) {
 object MonadOps {
   implicit def toMonadOps[A, M[_]](a:M[A])(implicit monad:Monad[M]) = new MonadOps[A, M](a)
   implicit def toMonadOpsPure[A](a:A) = new MonadOpsPure(a)
+
 }

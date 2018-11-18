@@ -14,15 +14,17 @@ class WriterTest extends WordSpecLike with Matchers {
   "writer monad" should {
     "work" in {
       type WriterString[A] = Writer[List[String], A];
-      {
+      val res = {
         for {
           x <- 1.pure[WriterString]
-          _ <- tell(List("een"))
+          _ <- tell(List(x.toString))
           y <- 2.pure[WriterString]
-          _ <- tell(List("twee"))
+          _ <- tell(List(y.toString))
           z <- 3.pure[WriterString]
-          _ <- tell(List("drie"))
-      } yield (x, y, z) }.run() shouldBe (List("een", "twee", "drie"), (1, 2, 3))
+          _ <- tell(List(z.toString))
+      } yield (x, y, z) }
+
+      res.run() shouldBe (List("een", "twee", "drie"), (1,2,3))
     }
   }
 }
